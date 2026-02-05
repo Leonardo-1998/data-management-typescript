@@ -9,27 +9,27 @@ import {
 export class CreateUserDto {
   @IsNotEmpty({ message: 'Email is required' })
   @IsEmail({}, { message: 'Invalid email format' })
-  email: string;
+  email!: string;
 
   @IsOptional()
   @IsString({ message: 'Name must be string' })
   name?: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Password is required' })
   @IsString({ message: 'Password must be string' })
   @MinLength(6, { message: 'Password minimal 6 characters' })
-  password: string;
+  password!: string;
 }
 
 export class LoginUserDto {
   @IsNotEmpty({ message: 'Email is required' })
   @IsEmail({}, { message: 'Invalid email format' })
-  email: string;
+  email!: string;
 
   @IsNotEmpty()
   @IsString({ message: 'Password must be string' })
   @MinLength(6, { message: 'Password minimal 6 characters' })
-  password: string;
+  password!: string;
 }
 
 export class UpdateUserDto {

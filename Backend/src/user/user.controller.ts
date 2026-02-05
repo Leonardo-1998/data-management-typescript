@@ -16,11 +16,6 @@ import { CreateUserDto, LoginUserDto, UpdateUserDto } from 'src/dto/user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get()
-  getHello(): string {
-    return 'Hello world';
-  }
-
   // Register
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
