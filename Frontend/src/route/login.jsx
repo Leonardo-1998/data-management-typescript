@@ -55,7 +55,7 @@ export function Login() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-[#EAF7CF]">
+      <div className="min-h-[calc(100vh-60px)] flex items-center justify-center bg-[#EAF7CF]">
         <Card className="w-full max-w-sm ">
           <CardHeader>
             <CardTitle>Login to your account</CardTitle>

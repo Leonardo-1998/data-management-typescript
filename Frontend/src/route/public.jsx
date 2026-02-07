@@ -1,11 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -14,18 +6,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 export function Public() {
   const [postData, setPostData] = useState([]);
+  const [allPostData, setAllPostData] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const getData = async () => {
       try {
         const post = await axios.get("http://localhost:3000/api/post/public");
         setPostData(post.data.data);
-        console.log(post.data.data);
+        setAllPostData(post.data.data);
       } catch (error) {
         console.error(error);
       }
@@ -34,15 +30,34 @@ export function Public() {
     getData();
   }, []);
 
+  useEffect(() => {
+    const filteredData = allPostData.filter((data) => {
+      if (data.title.includes(search)) {
+        return data;
+      }
+    });
+
+    setPostData(filteredData);
+  }, [search]);
+
   return (
-    <div className="min-h-[calc(100vh-60px)] flex justify-center bg-[#EAF7CF] pt-10">
+    <div className="min-h-[calc(100vh-60px)] flex bg-[#EAF7CF] pt-10 flex-col items-center">
+      <Field className="mb-10 w-1/5">
+        <Input
+          className="bg-white"
+          id="searchTitle"
+          type="text"
+          placeholder="Search by title"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </Field>
       <Table className="w-4/5 mx-auto bg-white">
         <TableHeader>
           <TableRow>
             <TableHead>No</TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Content</TableHead>
-            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
