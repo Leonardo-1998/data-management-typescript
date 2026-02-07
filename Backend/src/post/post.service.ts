@@ -8,6 +8,12 @@ export class PostService {
   constructor(private prisma: PrismaService) {}
 
   // Get All Post By AuthorId
+  async postAll(): Promise<Post[]> {
+    const post = await this.prisma.post.findMany();
+    return post;
+  }
+
+  // Get All Post By AuthorId
   async post(data: { userId: number }): Promise<Post[]> {
     const post = await this.prisma.post.findMany({
       where: { authorId: data.userId },

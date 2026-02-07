@@ -17,12 +17,19 @@ import { PostDto } from 'src/dto/post.dto';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  // Get All
+  // Get All By AuthorId
   @Get()
   async post(@Headers('authorization') authHeader: string) {
     const payload = verifyAuthHeader(authHeader);
 
     const post = await this.postService.post({ userId: payload.userId });
+    return successResponse(post, 'Get all post by AuthorId successfuly');
+  }
+
+  // Get All
+  @Get('public')
+  async postAll() {
+    const post = await this.postService.postAll();
     return successResponse(post, 'Get all post successfuly');
   }
 
