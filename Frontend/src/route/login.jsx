@@ -9,11 +9,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export function Login() {
+  const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsgArr, setErrorMsgArr] = useState([]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -21,12 +25,32 @@ export function Login() {
       ...loginForm,
       [id]: value,
     }));
-    console.log(loginForm);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault;
-    console.log("Form data: ", loginForm);
+    setErrorMsg("");
+
+    try {
+      const login = await axios.post(
+        "http://localhost:3000/api/user/login",
+        loginForm,
+      );
+
+      console.log(login);
+      const token = login.data.data.token;
+
+      localStorage.setItem("access_token", token);
+      navigate("/home");
+    } catch (error) {
+      const errorMessage = error.response.data.message;
+      if (error.response.data.error === "False email or password") {
+        setErrorMsg(errorMessage);
+      } else if (error.response.data.error === "Bad Request") {
+        setErrorMsgArr(errorMessage);
+      }
+      console.error(error);
+    }
   };
 
   return (
@@ -40,6 +64,20 @@ export function Login() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {errorMsg && (
+              <div className="mb-4 text-red-600 text-sm font-semibold">
+                {errorMsg}
+              </div>
+            )}
+            {errorMsgArr && (
+              <div className="mb-4 text-red-600 text-sm font-semibold">
+                <ul>
+                  {errorMsgArr.map((msg, idx) => {
+                    return <li key={idx}>{msg}</li>;
+                  })}
+                </ul>
+              </div>
+            )}
             <form>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
