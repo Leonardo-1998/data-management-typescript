@@ -66,13 +66,19 @@ export class UserService {
     });
 
     if (!user) {
-      throw new BadRequestException('Invalid email or password');
+      throw new BadRequestException('Invalid email or password', {
+        cause: new Error(),
+        description: 'False email or password',
+      });
     }
 
     const isPasswordValid = await comparePassword(data.password, user.password);
 
     if (!isPasswordValid) {
-      throw new BadRequestException('Invalid email or password');
+      throw new BadRequestException('Invalid email or password', {
+        cause: new Error(),
+        description: 'False email or password',
+      });
     }
 
     const token = generateToken({ userId: user.id, email: user.email });
