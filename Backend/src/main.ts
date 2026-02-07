@@ -9,8 +9,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true, // This flag enables auto-transformation
-      whitelist: true, // Optional: strips properties not defined in the DTO
+      transform: true,
+      whitelist: true,
     }),
   );
   app.enableCors();

@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   comparePassword,
@@ -6,7 +11,6 @@ import {
   hashPassword,
   TokenResult,
 } from 'src/utils/index';
-import { throwNotFound, throwConflict, throwBadRequest } from 'src/common';
 import { Prisma, User } from 'src/generated/prisma/client';
 
 @Injectable()
@@ -20,7 +24,8 @@ export class UserService {
     });
 
     if (!user) {
-      throwNotFound('User not found');
+      throw new NotFoundException('User not found');
+      // throwNotFound('User not found');
     }
 
     return user;
@@ -37,7 +42,7 @@ export class UserService {
     });
 
     if (existingUser) {
-      throwConflict('Email already exists');
+      throw new ConflictException('Email already exists');
     }
 
     const hashedPassword = await hashPassword(data.password);
@@ -61,13 +66,13 @@ export class UserService {
     });
 
     if (!user) {
-      throwBadRequest('Invalid email or password');
+      throw new BadRequestException('Invalid email or password');
     }
 
     const isPasswordValid = await comparePassword(data.password, user.password);
 
     if (!isPasswordValid) {
-      throwBadRequest('Invalid email or password');
+      throw new BadRequestException('Invalid email or password');
     }
 
     const token = generateToken({ userId: user.id, email: user.email });
@@ -83,7 +88,7 @@ export class UserService {
     const existingUser = await this.prisma.user.findUnique({ where });
 
     if (!existingUser) {
-      throwNotFound('User not found');
+      throw new NotFoundException('User not found');
     }
 
     return this.prisma.user.update({
@@ -97,7 +102,7 @@ export class UserService {
     const existingUser = await this.prisma.user.findUnique({ where });
 
     if (!existingUser) {
-      throwNotFound('User not found');
+      throw new NotFoundException('User not found');
     }
 
     return this.prisma.user.delete({

@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { throwNotFound } from 'src/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostDto } from 'src/dto/post.dto';
 import { Post } from 'src/generated/prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -37,7 +36,7 @@ export class PostService {
     });
 
     if (!post) {
-      throwNotFound('Post not found');
+      throw new NotFoundException('Post not found');
     }
 
     return post;
@@ -51,7 +50,7 @@ export class PostService {
     });
 
     if (!post) {
-      throwNotFound('Post not found');
+      throw new NotFoundException('Post not found');
     }
 
     return this.prisma.post.update({
@@ -68,7 +67,7 @@ export class PostService {
     });
 
     if (!post) {
-      throwNotFound('Post not found');
+      throw new NotFoundException('Post not found');
     }
 
     return this.prisma.post.delete({
