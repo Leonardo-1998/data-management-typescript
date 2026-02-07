@@ -1,16 +1,16 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { verifyToken, JwtPayload } from 'src/utils/jwt';
-import { throwUnauthorized } from 'src/common';
 
 export function verifyAuthHeader(authHeader: string | undefined): JwtPayload {
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    throwUnauthorized('Token not provided');
+    throw new UnauthorizedException('Token not provided');
   }
 
   const token = authHeader.substring(7);
   const payload = verifyToken(token);
 
   if (!payload) {
-    throwUnauthorized('Invalid token');
+    throw new UnauthorizedException('Token not provided');
   }
 
   return payload;
