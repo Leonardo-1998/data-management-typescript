@@ -10,6 +10,8 @@ import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 export function Public() {
   const [postData, setPostData] = useState([]);
@@ -66,7 +68,12 @@ export function Public() {
               <TableRow key={idx}>
                 <TableCell>{idx + 1}</TableCell>
                 <TableCell>{post.title}</TableCell>
-                <TableCell>{post.title}</TableCell>
+                <TableCell>{post.content}</TableCell>
+                <TableCell>
+                  <Link to={`public/${post.id}`}>
+                    <Button variant="outline">Details</Button>
+                  </Link>
+                </TableCell>
               </TableRow>
             );
           })}

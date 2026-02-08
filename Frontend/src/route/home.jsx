@@ -79,6 +79,12 @@ export function Home() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </Field>
+
+      <Link to="/post/create">
+        <Button variant="outline" className="mb-8">
+          Add Post
+        </Button>
+      </Link>
       <Table className="w-4/5 mx-auto bg-white">
         <TableHeader>
           <TableRow>

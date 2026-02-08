@@ -39,6 +39,9 @@ export class PostService {
     const { postId } = params;
     const post = await this.prisma.post.findUnique({
       where: { id: parseInt(postId) },
+      include: {
+        author: true,
+      },
     });
 
     if (!post) {
