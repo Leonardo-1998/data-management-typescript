@@ -100,7 +100,7 @@ export function Home() {
               <TableRow key={idx}>
                 <TableCell>{idx + 1}</TableCell>
                 <TableCell>{post.title}</TableCell>
-                <TableCell>{post.title}</TableCell>
+                <TableCell>{post.content}</TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

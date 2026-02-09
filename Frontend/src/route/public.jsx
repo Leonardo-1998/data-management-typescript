@@ -22,8 +22,25 @@ export function Public() {
     const getData = async () => {
       try {
         const post = await axios.get("http://localhost:3000/api/post/public");
-        setPostData(post.data.data);
-        setAllPostData(post.data.data);
+
+        const postArr = post.data.data;
+        const alteredPostArr = postArr.map((post) => {
+          let { content, ...alteredPost } = post;
+          if (content.length >= 10) {
+            content = content.substring(0, 10) + "...";
+
+            const newPost = { content, ...alteredPost };
+            console.log(newPost);
+
+            return newPost;
+          } else {
+            console.log(post);
+            return post;
+          }
+        });
+
+        setPostData(alteredPostArr);
+        setAllPostData(alteredPostArr);
       } catch (error) {
         console.error(error);
       }
@@ -65,6 +82,7 @@ export function Public() {
             <TableHead>No</TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Content</TableHead>
+            <TableHead className="text-center">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -74,7 +92,7 @@ export function Public() {
                 <TableCell>{idx + 1}</TableCell>
                 <TableCell>{post.title}</TableCell>
                 <TableCell>{post.content}</TableCell>
-                <TableCell>
+                <TableCell className="text-center">
                   <Link to={`public/${post.id}`}>
                     <Button variant="outline">Details</Button>
                   </Link>
