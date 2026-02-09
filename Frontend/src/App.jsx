@@ -11,6 +11,7 @@ import { EditPost } from "./route/editPost";
 import { Profile } from "./route/profile";
 import { EditProfile } from "./route/editProfile";
 import { PublicDetails } from "./route/publicDetails";
+import { UsersList } from "./route/usersList";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route element={<Authlayout />}>
           <Route index element={<Public />} />
           <Route path="public/:id" element={<PublicDetails />} />
+          <Route path="users/list" element={<UsersList />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>

@@ -43,8 +43,8 @@ export function Public() {
   }, [search]);
 
   return (
-    <div className="min-h-[calc(100vh-60px)] flex bg-[#EAF7CF] pt-10 flex-col items-center">
-      <Field className="mb-10 w-1/5">
+    <div className="min-h-[calc(100vh-60px)] flex bg-[#EAF7CF] pt-10 flex-col items-center gap-5">
+      <Field className="w-1/5">
         <Input
           className="bg-white"
           id="searchTitle"
@@ -54,6 +54,11 @@ export function Public() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </Field>
+
+      <Link to="/users/list">
+        <Button variant="outline">User List</Button>
+      </Link>
+
       <Table className="w-4/5 mx-auto bg-white">
         <TableHeader>
           <TableRow>
