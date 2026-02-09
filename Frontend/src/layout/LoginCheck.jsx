@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Outlet, Link } from "react-router";
+import { useNavigate, Outlet, Link, useLocation } from "react-router";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
 export default function LoginCheck() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [profile, setProfile] = useState("");
 
   const handleLogOut = (e) => {
     e.preventDefault;
 
     localStorage.removeItem("access_token");
-    navigate("/login");
+    navigate("/");
   };
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function LoginCheck() {
     };
 
     getProfile();
-  }, []);
+  }, [location.pathname]);
 
   return (
     <>

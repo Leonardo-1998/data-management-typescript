@@ -31,6 +31,18 @@ export class UserService {
     return user;
   }
 
+  // Get user
+  async allUser(): Promise<User[]> {
+    const user = await this.prisma.user.findMany();
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+      // throwNotFound('User not found');
+    }
+
+    return user;
+  }
+
   // Create User
   async createUser(data: {
     email: string;

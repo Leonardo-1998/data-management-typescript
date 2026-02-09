@@ -45,6 +45,21 @@ export class UserController {
     );
   }
 
+  // Get all user
+  @Get('all')
+  async getAllUser() {
+    const users = await this.userService.allUser();
+
+    const usersWithOutPassword = users.map((user) => {
+      const { password, ...userWithOutPassword } = user;
+      return { userWithOutPassword };
+    });
+    return successResponse(
+      usersWithOutPassword,
+      'Profile retrieved successfully',
+    );
+  }
+
   @Put('update')
   async updateProfile(
     @Headers('authorization') authHeader: string,
