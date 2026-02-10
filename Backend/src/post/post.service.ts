@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PostDto } from 'src/dto/post.dto';
 import { Post } from 'src/generated/prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -24,6 +28,14 @@ export class PostService {
   // Create Post
   async create(params: { data: PostDto; authorId: number }): Promise<Post> {
     const { data, authorId } = params;
+
+    const author = await this.prisma.user.findUnique({
+      where: { id: authorId },
+    });
+
+    if (!author) {
+      throw new BadRequestException('Author does not exist');
+    }
 
     return await this.prisma.post.create({
       data: {

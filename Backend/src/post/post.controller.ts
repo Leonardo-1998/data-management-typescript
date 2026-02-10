@@ -51,7 +51,12 @@ export class PostController {
 
   // Get One
   @Get(':id')
-  async postOne(@Param('id') id: string) {
+  async postOne(
+    @Headers('authorization') authHeader: string,
+    @Param('id') id: string,
+  ) {
+    verifyAuthHeader(authHeader);
+
     const getOne = await this.postService.getOne({
       postId: id,
     });
@@ -61,7 +66,13 @@ export class PostController {
 
   // Update One
   @Put(':id')
-  async updateOne(@Body() postDto: PostDto, @Param('id') id: string) {
+  async updateOne(
+    @Headers('authorization') authHeader: string,
+    @Body() postDto: PostDto,
+    @Param('id') id: string,
+  ) {
+    verifyAuthHeader(authHeader);
+
     const updateOne = await this.postService.updateOne({
       data: postDto,
       postId: id,
@@ -72,7 +83,12 @@ export class PostController {
 
   // Delete One
   @Delete(':id')
-  async deleteOne(@Param('id') id: string) {
+  async deleteOne(
+    @Headers('authorization') authHeader: string,
+    @Param('id') id: string,
+  ) {
+    verifyAuthHeader(authHeader);
+
     const deleteOne = await this.postService.deleteOne({
       postId: id,
     });

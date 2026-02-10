@@ -4,6 +4,15 @@
 
 Project ini adalah aplikasi Admin Panel untuk mengelola data post, terdiri dari Backend (NestJS + Prisma) dan Frontend (React + Vite + Tailwind).
 
+Public Page
+![Public-HomePage](./assets/Public.png)
+
+Login Page
+![LoginPage](./assets/Login.png)
+
+Edit Profile Page
+![Edit Profile](./assets/EditProfile.png)
+
 ## Dependency
 
 - Backend: NestJS, Prisma, PostgreSQL, Bycrypt, dan JsonWebToken.
@@ -24,7 +33,8 @@ model Post {
 id Int @default(autoincrement()) @id
 title String
 content String?
-author User @relation(fields: [authorId], references: [id])
+author User @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
 authorId Int
 }
 ```
@@ -72,6 +82,8 @@ authorId Int
    ```
 
 ## Daftar API (Backend - NestJs)
+
+Postman Link : https://leonardo-667607.postman.co/workspace/Leonardo's-Workspace~94de4743-9fd3-4890-8dd2-9727a8bac051/collection/44033988-eef93586-83f4-4d4a-8573-ea660fc06d10?action=share&creator=44033988
 
 - ## User
 
@@ -237,7 +249,7 @@ Authorization: Bearer <token>
 _(Tidak ada Body)_
 ```
 
-**Response**
+**Response (200 - Profile retrieved successfully)**
 
 ```json
 {
@@ -252,41 +264,43 @@ _(Tidak ada Body)_
 }
 ```
 
-- ### GET /api/user/all
+---
 
-  Mendapatkan daftar semua user.
+### GET /api/user/all
 
-  **Request**
+Mendapatkan daftar semua user.
 
-  ```json
-  _(Tidak ada Body)_
-  ```
+**Request**
 
-  **Response(200 - Profile retrieved successfully)**
+```json
+_(Tidak ada Body)_
+```
 
-  ```json
-  {
-    "success": true,
-    "message": "Profile retrieved successfully",
-    "data": [
-      {
-        "userWithOutPassword": {
-          "id": 2,
-          "email": "123@mail.com",
-          "name": ""
-        }
-      },
-      {
-        "userWithOutPassword": {
-          "id": 6,
-          "email": "leo123@gmail.com",
-          "name": null
-        }
+**Response(200 - Profile retrieved successfully)**
+
+```json
+{
+  "success": true,
+  "message": "Profile retrieved successfully",
+  "data": [
+    {
+      "userWithOutPassword": {
+        "id": 2,
+        "email": "123@mail.com",
+        "name": ""
       }
-    ],
-    "statusCode": 200
-  }
-  ```
+    },
+    {
+      "userWithOutPassword": {
+        "id": 6,
+        "email": "leo123@gmail.com",
+        "name": null
+      }
+    }
+  ],
+  "statusCode": 200
+}
+```
 
 ---
 
@@ -363,42 +377,302 @@ Authorization: Bearer <token>
 _(Tidak ada Body)_
 ```
 
-**Response**
+**Response (200 - Profile deleted successfuly)**
 
-## Post
-
-- **GET /api/post/public**
-  Mendapatkan daftar semua post (public).
-
-  Request()
-
-  **Response**
-
-  ```ts
-
-  ```
-
+```json
+{
+  "success": true,
+  "message": "Profile deleted successfuly",
+  "data": {
+    "id": 1,
+    "email": "leo123@gmail.com",
+    "name": ""
+  },
+  "statusCode": 200
+}
 ```
 
-- **GET /api/post/**
-  Mendapatkan daftar post milik user (perlu token).
-- **GET /api/post/:id**
-  Mendapatkan detail post berdasarkan ID.
-- **POST /api/post/create**
-  Membuat post baru (perlu token).
-- **PUT /api/post/:id**
-  Mengedit post berdasarkan ID (perlu token).
-- **DELETE /api/post/:id**
-  Menghapus post berdasarkan ID (perlu token).
+---
 
-> Untuk endpoint yang membutuhkan token, gunakan header:
-> `Authorization: Bearer <token>`
+- ## Post
 
-Tambahkan bagian ini ke README agar pengguna tahu API yang tersedia.
+### GET /api/post/public
+
+Mendapatkan daftar semua post (public).
+
+**Request**
+
+```json
+_(Tidak ada Body)_
+```
+
+**Response (200 - Get all post successfuly)**
+
+```json
+{
+  "success": true,
+  "message": "Get all post by AuthorId successfuly",
+  "data": [],
+  "statusCode": 200
+}
+```
+
+---
+
+### GET /api/post/
+
+Mendapatkan daftar post milik user (perlu token).
+
+**Headers**
+
+```json
+Authorization: Bearer <token>
+```
+
+**Request**
+
+```json
+_(Tidak ada Body)_
+```
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "Get all post successfuly",
+  "data": [
+    {
+      "id": 6,
+      "title": "23123",
+      "content": "123456",
+      "authorId": 2
+    },
+    {
+      "id": 7,
+      "title": "123132",
+      "content": "45615",
+      "authorId": 4
+    },
+    {
+      "id": 9,
+      "title": "ad",
+      "content": "",
+      "authorId": 4
+    },
+    {
+      "id": 10,
+      "title": "dakldmasklmdkl",
+      "content": "mklasmdklamkldmaskldmklasmkldmaskl",
+      "authorId": 4
+    }
+  ],
+  "statusCode": 200
+}
+```
+
+---
+
+### GET /api/post/:id
+
+Mendapatkan detail post berdasarkan ID.
+Parameter Path:
+
+- id (string): ID dari post yang ingin diambil.
+
+Contoh:
+GET /api/post/6
+
+**Headers**
+
+```json
+Authorization: Bearer <token>
+```
+
+**Request**
+
+```json
+_(Tidak ada Body)_
+```
+
+**Response (200 - OK)**
+
+```json
+{
+  "id": 6,
+  "title": "23123",
+  "content": "123456",
+  "authorId": 2,
+  "author": {
+    "id": 2,
+    "email": "123@mail.com",
+    "password": "$2b$10$JkhVxmZGz81KyrwQSNO1Ruah3rGrPRhq2pcan6aEYZk0R5y575YDS",
+    "name": ""
+  }
+}
+```
+
+---
+
+### POST /api/post/create
+
+Membuat post baru (perlu token).
+Parameter Path:
+
+**Headers**
+
+```json
+Authorization: Bearer <token>
+```
+
+**Request**
+
+```json
+{
+  "title": "Random",
+  "content": "This is a random post"
+}
+```
+
+**Response (201 - Created)**
+
+```json
+{
+  "id": 6,
+  "title": "Random",
+  "content": "This is a random post",
+  "authorId": 7
+}
+```
+
+---
+
+### PUT /api/post/:id
+
+Mengedit post berdasarkan ID (perlu token). Parameter Path:
+
+- id (string): ID dari post yang ingin diupdate.
+
+Contoh:
+PUT /api/post/6
+
+**Headers**
+
+```json
+Authorization: Bearer <token>
+```
+
+**Request**
+
+```json
+{
+  "title": "leo123@gmail.com",
+  "content": "123456"
+}
+```
+
+**Response (200 - OK)**
+
+```json
+{
+  "id": 6,
+  "title": "leo123@gmail.com",
+  "content": "123456",
+  "authorId": 2
+}
+```
+
+---
+
+**Request**
+
+```json
+{
+  "title": "",
+  "content": "123456"
+}
+
+OR
+
+{
+  "title": "",
+  "content": ""
+}
+```
+
+**Response (400 - Bad Request)**
+
+```json
+{
+  "message": ["Title is required"],
+  "error": "Bad Request",
+  "statusCode": 400
+}
+```
+
+---
+
+### DELETE /api/post/:id
+
+Menghapus post berdasarkan ID (perlu token). Parameter Path:
+
+- id (string): ID dari post yang ingin diupdate.
+
+Contoh:
+DELETE /api/post/6
+
+**Headers**
+
+```json
+Authorization: Bearer <token>
+```
+
+**Request**
+
+```json
+_(Tidak ada Body)_
+```
+
+**Response (404 - Not Found)**
+
+```json
+{
+  "id": 6,
+  "title": "leo123@gmail.com",
+  "content": "123456",
+  "authorId": 2
+}
+```
+
+---
+
+Contoh:
+DELETE /api/post/999999
+
+**Headers**
+
+```json
+Authorization: Bearer <token>
+```
+
+**Request**
+
+```json
+_(Tidak ada Body)_
+```
+
+**Response (404 - Not Found)**
+
+```json
+{
+  "message": "Post not found",
+  "error": "Not Found",
+  "statusCode": 404
+}
+```
 
 ## Dokumentasi Tambahan
 
 - [shadcn/ui Vite](https://ui.shadcn.com/docs/installation/vite)
 - [NestJS Prisma](https://docs.nestjs.com/recipes/prisma#set-up-prisma)
 - [NestJS Exception Filters](https://docs.nestjs.com/exception-filters)
-```

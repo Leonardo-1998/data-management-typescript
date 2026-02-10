@@ -123,6 +123,10 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
 
+    await this.prisma.post.deleteMany({
+      where: { authorId: existingUser.id },
+    });
+
     return this.prisma.user.delete({
       where,
     });
