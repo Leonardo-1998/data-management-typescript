@@ -676,3 +676,4 @@ _(Tidak ada Body)_
 - [shadcn/ui Vite](https://ui.shadcn.com/docs/installation/vite)
 - [NestJS Prisma](https://docs.nestjs.com/recipes/prisma#set-up-prisma)
 - [NestJS Exception Filters](https://docs.nestjs.com/exception-filters)
+- [Toastify](https://fkhadra.github.io/react-toastify/introduction/#make-it-yours)

@@ -20,6 +20,7 @@ import { MoreHorizontalIcon } from "lucide-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { Bounce, toast } from "react-toastify";
 
 export function Home() {
   const [postData, setPostData] = useState([]);
@@ -46,6 +47,18 @@ export function Home() {
     try {
       await axios.delete(`http://localhost:3000/api/post/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
+      });
+
+      toast.error("Delete post successfully", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
       });
 
       getData();

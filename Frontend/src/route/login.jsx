@@ -12,12 +12,11 @@ import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { Bounce, toast } from "react-toastify";
 
 export function Login() {
   const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
-  const [errorMsg, setErrorMsg] = useState("");
-  const [errorMsgArr, setErrorMsgArr] = useState([]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -29,7 +28,6 @@ export function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault;
-    setErrorMsg("");
 
     try {
       const login = await axios.post(
@@ -37,7 +35,17 @@ export function Login() {
         loginForm,
       );
 
-      console.log(login);
+      toast.success("Login successful", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       const token = login.data.data.token;
 
       localStorage.setItem("access_token", token);
@@ -45,9 +53,31 @@ export function Login() {
     } catch (error) {
       const errorMessage = error.response.data.message;
       if (error.response.data.error === "False email or password") {
-        setErrorMsg(errorMessage);
+        toast.error(errorMessage, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       } else if (error.response.data.error === "Bad Request") {
-        setErrorMsgArr(errorMessage);
+        errorMessage.map((err) => {
+          return toast.error(err, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        });
       }
       console.error(error);
     }
@@ -64,20 +94,6 @@ export function Login() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {errorMsg && (
-              <div className="mb-4 text-red-600 text-sm font-semibold">
-                {errorMsg}
-              </div>
-            )}
-            {errorMsgArr && (
-              <div className="mb-4 text-red-600 text-sm font-semibold">
-                <ul>
-                  {errorMsgArr.map((msg, idx) => {
-                    return <li key={idx}>{msg}</li>;
-                  })}
-                </ul>
-              </div>
-            )}
             <form>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">

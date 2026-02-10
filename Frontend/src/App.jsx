@@ -12,10 +12,24 @@ import { Profile } from "./route/profile";
 import { EditProfile } from "./route/editProfile";
 import { PublicDetails } from "./route/publicDetails";
 import { UsersList } from "./route/usersList";
+import { ToastContainer, Bounce } from "react-toastify";
 
 function App() {
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
       <Routes>
         <Route element={<Authlayout />}>
           <Route index element={<Public />} />

@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { Bounce, toast } from "react-toastify";
 
 export function EditProfile() {
   const navigate = useNavigate();
@@ -20,14 +21,23 @@ export function EditProfile() {
     e.preventDefault;
     try {
       const token = localStorage.getItem("access_token");
-      const profile2 = await axios.put(
-        "http://localhost:3000/api/user/update",
-        profile,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          "Content-Type": "application/json",
-        },
-      );
+      await axios.put("http://localhost:3000/api/user/update", profile, {
+        headers: { Authorization: `Bearer ${token}` },
+        "Content-Type": "application/json",
+      });
+
+      toast.success("Update profile successfully", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       navigate("/profile");
     } catch (error) {
       console.error(error);
