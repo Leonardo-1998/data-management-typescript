@@ -51,12 +51,7 @@ export class PostController {
 
   // Get One
   @Get(':id')
-  async postOne(
-    @Headers('authorization') authHeader: string,
-    @Param('id') id: string,
-  ) {
-    verifyAuthHeader(authHeader);
-
+  async postOne(@Param('id') id: string) {
     const getOne = await this.postService.getOne({
       postId: id,
     });
