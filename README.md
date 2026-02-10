@@ -16,9 +16,11 @@ Edit Profile Page
 ## Dependency
 
 - Backend: NestJS, Prisma, PostgreSQL, Bycrypt, dan JsonWebToken.
-- Frontend: Axios, React, Vite, Tailwind, dan shadcn/ui.
+- Frontend: Axios, React, Vite, Tailwind, Toastify, dan shadcn/ui.
 
 ## Design Database
+
+Prisma Schema
 
 ```ts
 model User {
@@ -38,6 +40,28 @@ author User @relation(fields: [authorId], references: [id], onDelete: Cascade, o
 authorId Int
 }
 ```
+
+ERD
+
+```ts
+Table User {
+  id int [pk, increment]
+  email varchar [unique]
+  password varchar
+  name varchar
+}
+
+Table Post {
+  id int [pk, increment]
+  title varchar
+  content varchar
+  authorId int
+}
+
+Ref: Post.authorId > User.id
+```
+
+![ERD](./assets/ERD.png)
 
 ## Fitur Utama
 
