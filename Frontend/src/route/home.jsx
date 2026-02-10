@@ -42,8 +42,11 @@ export function Home() {
   };
 
   const handleDelete = async (id) => {
+    const token = localStorage.getItem("access_token");
     try {
-      await axios.delete(`http://localhost:3000/api/post/${id}`);
+      await axios.delete(`http://localhost:3000/api/post/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       getData();
     } catch (error) {

@@ -9,10 +9,40 @@ import {
 import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import React from "react";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 export function Profile() {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState({ email: "", name: "" });
+
+  const handleDelete = async () => {
+    const token = localStorage.getItem("access_token");
+    try {
+      await axios.delete("http://localhost:3000/api/user/delete", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      localStorage.removeItem("access_token");
+
+      toast.error("Account Deleted Successfuly", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const getProfile = async () => {
@@ -40,6 +70,19 @@ export function Profile() {
 
   return (
     <div className="min-h-[calc(100vh-60px)] flex items-center justify-center bg-[#EAF7CF]">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Profile</CardTitle>
@@ -57,9 +100,16 @@ export function Profile() {
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Link to="/profile/edit">
+          <Link to="/profile/edit" className="w-full">
             <Button className="w-full">Edit</Button>
           </Link>
+          <Button
+            variant="destructive"
+            className="w-full mt-2"
+            onClick={handleDelete}
+          >
+            Delete Profile
+          </Button>
         </CardFooter>
       </Card>
     </div>

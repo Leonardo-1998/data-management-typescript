@@ -30,11 +30,9 @@ export function Public() {
             content = content.substring(0, 10) + "...";
 
             const newPost = { content, ...alteredPost };
-            console.log(newPost);
 
             return newPost;
           } else {
-            console.log(post);
             return post;
           }
         });

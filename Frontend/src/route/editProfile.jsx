@@ -78,7 +78,7 @@ export function EditProfile() {
               <div className="grid gap-2">
                 <Label>Email : {profile.email}</Label>
               </div>
-              <div className="grid gap-2">
+              <div className="flex items-center gap-2">
                 <Label htmlFor="name">Name :</Label>
                 <Input
                   id="name"
@@ -86,6 +86,7 @@ export function EditProfile() {
                   required
                   value={profile.name}
                   onChange={handleChange}
+                  className="flex-1"
                 />
               </div>
             </div>
